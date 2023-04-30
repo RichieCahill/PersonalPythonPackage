@@ -2,16 +2,18 @@ import unittest
 from TMMPythonPackage import TypeTest, GetLoggerDict, FindReplaceList, AddMonths, BashWrapper ,TrueBashWrapper
 from datetime import date
 
+hello_world = "HELLO WORLD!"
+
 class TestBashWrapper(unittest.TestCase):
 		
 		def test_valid_command(self):
-				output, returncode = BashWrapper("echo 'Hello, World!'")
-				self.assertEqual(output.strip(), "'Hello, World!'")
+				output, returncode = BashWrapper("echo 'HELLO WORLD!'")
+				self.assertEqual(output.strip(), "'HELLO WORLD!'")
 				self.assertEqual(returncode, 0)
 
 		def test_valid_command2(self):
-				output, returncode = BashWrapper("echo Hello, World!")
-				self.assertEqual(output.strip(), "Hello, World!")
+				output, returncode = BashWrapper("echo HELLO WORLD!")
+				self.assertEqual(output.strip(), hello_world)
 				self.assertEqual(returncode, 0)
 
 		def test_invalid_command(self):
@@ -20,18 +22,18 @@ class TestBashWrapper(unittest.TestCase):
 						
 		def test_wrong_argument_type(self):
 				with self.assertRaises(TypeError):
-						output, returncode = BashWrapper(42)
+						output, returncode = BashWrapper(42) # type: ignore
 
 class TestTrueBashWrapper(unittest.TestCase):
 		
 		def test_valid_command(self):
-				output, returncode = TrueBashWrapper("echo 'Hello, World!'")
-				self.assertEqual(output.strip(), "Hello, World!")
+				output, returncode = TrueBashWrapper("echo 'HELLO WORLD!'")
+				self.assertEqual(output.strip(), hello_world)
 				self.assertEqual(returncode, 0)
 
 		def test_valid_command2(self):
-				output, returncode = TrueBashWrapper("echo Hello, World!")
-				self.assertEqual(output.strip(), "Hello, World!")
+				output, returncode = TrueBashWrapper("echo HELLO WORLD!")
+				self.assertEqual(output.strip(), hello_world)
 				self.assertEqual(returncode, 0)
 
 		def test_invalid_command(self):
@@ -41,29 +43,32 @@ class TestTrueBashWrapper(unittest.TestCase):
 
 		def test_wrong_argument_type(self):
 				with self.assertRaises(TypeError):
-						output, returncode = TrueBashWrapper(42)
+						output, returncode = TrueBashWrapper(42) # type: ignore
 
+str_error   = "String expected"
+int_error   = "Integer expected"
+float_error = "Float expected"
 class TestTypeTest(unittest.TestCase):
 
     def test_valid_input(self):
         # No exception should be raised for valid input
         try:
-            TypeTest("test_string", str, "String expected")
-            TypeTest(42, int, "Integer expected")
-            TypeTest(3.14, float, "Float expected")
+            TypeTest("test_string", str, str_error)
+            TypeTest(42, int, int_error)
+            TypeTest(3.14, float, float_error)
         except TypeError:
             self.fail("TypeTest raised TypeError unexpectedly for valid input")
 
     def test_invalid_input(self):
         # TypeError should be raised for invalid input
-        with self.assertRaises(TypeError, msg="String expected"):
-            TypeTest(42, str, "String expected")
+        with self.assertRaises(TypeError, msg=str_error):
+            TypeTest(42, str, str_error)
 
-        with self.assertRaises(TypeError, msg="Integer expected"):
-            TypeTest("test_string", int, "Integer expected")
+        with self.assertRaises(TypeError, msg=int_error):
+            TypeTest("test_string", int, int_error)
 
-        with self.assertRaises(TypeError, msg="Float expected"):
-            TypeTest("test_string", float, "Float expected")
+        with self.assertRaises(TypeError, msg=float_error):
+            TypeTest("test_string", float, float_error)
 
     def test_subclass_instance(self):
         class MyBaseClass:
@@ -99,7 +104,7 @@ class TestFindReplaceList(unittest.TestCase):
 
     def test_invalid_input_type(self):
         with self.assertRaises(TypeError):
-            FindReplaceList('apple', 'grape', "this should be a list")
+            FindReplaceList('apple', 'grape', "this should be a list") # type: ignore
 
 log_path = 'test.log'
 class TestGetLoggerDict(unittest.TestCase):
@@ -130,11 +135,11 @@ class TestGetLoggerDict(unittest.TestCase):
 
     def test_invalid_log_path_type(self):
         with self.assertRaises(TypeError):
-            GetLoggerDict('info', ['this', 'should', 'be', 'a', 'string'])
+            GetLoggerDict('info', ['this', 'should', 'be', 'a', 'string']) # type: ignore
 
     def test_invalid_level_type(self):
         with self.assertRaises(TypeError):
-            GetLoggerDict(['this', 'should', 'be', 'a', 'string'], log_path)
+            GetLoggerDict(['this', 'should', 'be', 'a', 'string'], log_path) # type: ignore
 
 class TestAddMonths(unittest.TestCase):
 
@@ -150,11 +155,11 @@ class TestAddMonths(unittest.TestCase):
 
     def test_invalid_input_date_type(self):
         with self.assertRaises(TypeError):
-            AddMonths("2021-10-01", 4)
+            AddMonths("2021-10-01", 4) # type: ignore
 
     def test_invalid_add_months_type(self):
         with self.assertRaises(TypeError):
-            AddMonths(date(2021, 10, 1), "4")
+            AddMonths(date(2021, 10, 1), "4") # type: ignore
 
     def test_add_months_less_than_one(self):
         with self.assertRaises(ValueError):
