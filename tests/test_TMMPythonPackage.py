@@ -1,5 +1,5 @@
 import unittest
-from TMMPythonPackage import TypeTest, GetLoggerDict, FindReplaceList, AddMonths, BashWrapper ,TrueBashWrapper
+from ..TMMPythonPackage import TypeTest, GetLoggerDict, FindReplaceList, AddMonths, BashWrapper, TrueBashWrapper
 from datetime import date
 
 hello_world = "HELLO WORLD!"
