@@ -1,11 +1,9 @@
-name: Codecov
+name: pytest
 
-on:
-  push:
-    branches: [main]
+on: [push, pull_request]
 
 jobs:
-  codecov:
+  test:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -24,7 +22,3 @@ jobs:
       - name: Run tests and collect coverage
         run: pytest --cov=api.calculator --cov-report=xml
 
-      - name: Upload coverage reports to Codecov
-        uses: codecov/codecov-action@v3.1.1
-        # with:
-        #   token: ${{ secrets.CODECOV }}
