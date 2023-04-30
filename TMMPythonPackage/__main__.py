@@ -30,18 +30,24 @@ def FindReplaceList(find, replace, inputList: list):
 	return [replace if x == find else x for x in inputList]
 
 # time date max year is 9999
-def AddMonths(inputDate: date, addMonths: int = 1) -> date:
-	TypeTest(inputDate, test_type=date, error_msg=f"inputDate type is {type(inputDate)} should be date")
-	TypeTest(addMonths, test_type=int, error_msg=f"addMonths type is {type(addMonths)} should be int")
-	if addMonths < 1:
-		raise ValueError(f"addMonths is {addMonths} and cant be less then 1")
-	NewYear = inputDate.year
-	NewMonth = inputDate.month + addMonths
-	if NewMonth > 12:
-		TempMonths = NewMonth%12
-		NewYear = NewYear+(NewMonth-TempMonths)//12
-		NewMonth = TempMonths
-	return inputDate.replace(year=NewYear, month=NewMonth)
+def AddMonths(input_date: date, add_months: int = 1) -> date:
+	TypeTest(input_date, test_type=date, error_msg=f"input_date type is {type(input_date)} should be date")
+	TypeTest(add_months, test_type=int, error_msg=f"add_months type is {type(add_months)} should be int")
+	if add_months < 1:
+		raise ValueError(f"add_months is {add_months} and cant be less then 1")
+	new_year 	= input_date.year
+	new_month = input_date.month + add_months
+	day 			= input_date.day
+	last_day_of_month = [0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+	if new_month > 12:
+		TempMonths = new_month%12
+		new_year = new_year+(new_month-TempMonths)//12
+		new_month = TempMonths
+	if new_year%4 == 0:
+		last_day_of_month[2] = 29
+	if day > last_day_of_month[new_month]:
+		day=last_day_of_month[new_month]
+	return input_date.replace(year=new_year, month=new_month, day=day)
 
 def BashWrapper(command: str):
 	TypeTest(command, test_type=str, error_msg=f"command type = {command} should be str")
